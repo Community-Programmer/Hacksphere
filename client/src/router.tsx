@@ -14,6 +14,13 @@ import VerificationEmailSent from "./pages/EmailVerification/VerificationEmailSe
 import VerificationStatus from "./pages/EmailVerification/VerificationStatus";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import PasswordResetForm from "./pages/ForgotPassword/PasswordResetForm";
+import AITutorLayout from "./Layout/AITutorLayout";
+import AITutor from "./pages/AI_Tutor/AITutor";
+import Lesson from "./pages/AI_Tutor/Lesson";
+import RoadMap from "./pages/AI_Tutor/RoadMap";
+import Learning from "./pages/AI_Tutor/Learning";
+import Quiz from "./pages/AI_Tutor/Quiz";
+import QuizQuestion from "./pages/AI_Tutor/QuizQuestion";
 
 const mainLayoutRoutes = [
   {
@@ -35,6 +42,39 @@ const mainLayoutRoutes = [
   },
 ];
 
+
+const placementPrepLayoutRoutes = [
+  {
+    path: "",
+    index: true,
+    element: <AITutor />,
+  },
+  {
+    path: "learning",
+    index: true,
+    element: <Learning/>,
+  },
+  {
+    path: "roadmap/:topicId",
+    index: true,
+    element: <RoadMap/>,
+  },  {
+    path: "lesson/:lessonId",
+    index: true,
+    element: <Lesson/>,
+  },{
+    path: "quiz",
+    index: true,
+    element: <Quiz/>,
+  }
+  ,{
+    path: "quiz/:quizId",
+    index: true,
+    element: <QuizQuestion/>,
+  }
+  
+];
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,8 +89,14 @@ const router = createBrowserRouter([
             element: <Features/>,
 
           },
+          {
+            path: "/placementPrep",
+            element: <AITutorLayout/>,
+            children: placementPrepLayoutRoutes,
+          },
         ],
       },
+      
       {
         path: "/",
         element: <MainLayout />,
