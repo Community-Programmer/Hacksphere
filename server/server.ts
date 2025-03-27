@@ -1,12 +1,15 @@
+import mongoose from 'mongoose';
 import { io, server } from './src/app';
 
 const startServer = async () => {
   const port = process.env.PORT || 5050;
-
+  await mongoose.connect(process.env.DATABASE_URL as string);
   server.listen(port, () => {
     console.log(`Listening on port: ${port}`);
   });
 };
+
+
 
 io.on('connection', socket => {
   console.log('New client connected');

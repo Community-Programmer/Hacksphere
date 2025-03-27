@@ -57,7 +57,7 @@ async def generate_roadmap(job_role):
 
 
 async def generate_content(job_details):
-    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.4)
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro-001", temperature=0.4)
     
     prompt = PromptTemplate(
         template="""
@@ -77,12 +77,12 @@ async def generate_content(job_details):
 
 
 async def generate_quiz(lesson_content):
-    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.4)
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro-001", temperature=0.4)
 
     class QuestionItem(BaseModel):
         questionNo: int
         question: str
-        options: Optional[str] = []
+        options: List[str] 
         answer: str
 
     class Quiz(BaseModel):
@@ -96,19 +96,19 @@ async def generate_quiz(lesson_content):
     prompt = PromptTemplate(
         template="""
         You are an expert in creating interview preparation quizzes. Based on the lesson content provided in JSON format, 
-        generate a quiz for the job role preparation. Include the following:
-        1. testName: Name of the test tailored to the job role
-        2. testDescription: A brief description of the test purpose
-        3. 20 questions, including:
-            - Multiple-choice questions
-            - True/False questions
-            - Scenario-based short-answer questions
-        4. Provide 4 answer options for each question, and indicate the correct answer.
-        5. Ensure the questions include both technical and behavioral aspects of the job role.
-        6. difficulty: Difficulty level based on content.
+        generate a quiz for job role preparation. Your output must be valid JSON that includes the following fields:
+        - testName: Name of the test tailored to the job role.
+        - testDescription: A brief description of the test purpose.
+        - totalQuestions: The total number of questions.
+        - questions: A list of 20 questions, where each question includes:
+            - questionNo: The question number.
+            - question: The text of the question.
+            - options: A list of 4 answer options.
+            - answer: The correct answer.
+        - difficulty: The difficulty level based on the content.
         
-        Please ensure your response begins with ```json and includes all required fields.
-
+        Ensure that your response is valid JSON.
+        
         Lesson Content:
         {lesson_content}
         """,
@@ -121,10 +121,11 @@ async def generate_quiz(lesson_content):
     return response
 
 
+
 memory = ConversationBufferMemory(human_prefix="Friend")
 
 async def speak_test(job_question):
-    llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.4)
+    llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro-001", temperature=0.4)
     template = """
     The following is a conversation between a human and an AI. The AI is a friendly and expert career coach who specializes in 
     job interview preparation. The AI provides specific advice, mock interview questions, and tips for personal development 
