@@ -135,12 +135,21 @@ def extract_text_from_docx(file: BytesIO) -> str:
         # Save the file temporarily for docx2txt processing
         with open("temp.docx", "wb") as temp_file:
             temp_file.write(file.read())
-        # Extract text using docx2txt
-        # text = docx2txt.process("temp.docx")
-        # return text
+        # Use subprocess to run docx2txt
+        result = subprocess.run(
+            ['docx2txt', 'temp.docx'], 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE
+        )
+        if result.returncode != 0:
+            raise Exception(f"Error extracting text from DOCX: {result.stderr.decode()}")
+        return result.stdout.decode('utf-8')
     except Exception as e:
         raise Exception(f"Error extracting DOCX text: {e}")
-
+    finally:
+        # Clean up temporary file
+        if os.path.exists("temp.docx"):
+            os.remove("temp.docx")
 
 # Function to extract text from ODT using pandoc (alternative to pypandoc)
 def extract_text_from_odt(file: BytesIO) -> str:
