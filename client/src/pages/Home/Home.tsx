@@ -1,88 +1,173 @@
-import React from 'react'
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import axios from 'axios'
-import api from '@/config/axiosInstance'
-
+import React, { useState, ReactNode } from "react";
+import { motion } from "framer-motion";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import { FileText, Mic, UserCheck, Star } from "lucide-react";
+import aiImage1 from "../../assets/ai-first.jpg";
+import aiImage2 from "../../assets/resume-img.png";
+import TimeLine from "@/components/TimeLine/TimeLine";
+import ImprovedStatsCounter from "@/components/Counter/Counter";
+import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 
 const HomePage: React.FC = () => {
-
-  const [pageUrl, setPageUrl] = useState('')
-  const [visibility, setVisibility] = useState('public')
-  const [expiresIn, setExpiresIn] = useState('')
-
-  const gh = async () => {
-    try {
-
-      const datas = await api.get('auth/protected');
-
-      console.log(datas.data)
-      
-    } catch (error) {
-      console.log(error)
-    }
+  interface Slide {
+    title: string;
+    description: string;
+    image: string;
+    rating: number;
   }
+
+  const slides: Slide[] = [
+    {
+      title: "Ace Your Interviews with AI Mock Sessions",
+      description:
+        "Simulate real-world interviews with our AI-powered mock interview sessions. Get instant feedback and improve with each session!",
+      image: aiImage1,
+      rating: 4.9,
+    },
+    {
+      title: "Perfect Your Resume with AI Evaluation",
+      description:
+        "Upload your resume and let our AI analyze and provide suggestions to make it stand out. Tailored tips for every role!",
+      image: aiImage2,
+      rating: 4.8,
+    },
+  ];
+
+  interface Feature {
+    title: string;
+    description: string;
+    icon: ReactNode;
+  }
+
+  const servicess: Feature[] = [
+    {
+      title: "AI Mock Interview",
+      description:
+        "Prepare with AI-driven mock interviews designed to replicate industry standards and provide actionable insights.",
+      icon: <Mic className="w-6 h-6" />,
+    },
+    {
+      title: "Resume Evaluator",
+      description:
+        "Upload your resume for instant evaluation. Receive feedback on formatting, content, and keywords.",
+      icon: <FileText className="w-6 h-6" />,
+    },
+    {
+      title: "Personalized Training",
+      description:
+        "Get tailored technical training and roadmaps based on your strengths and improvement areas.",
+      icon: <UserCheck className="w-6 h-6" />,
+    },
+  ];
+
+  const [activeSlide, setActiveSlide] = useState<number>(0);
 
   return (
     <>
- 
-      <main className="flex-grow container mx-auto px-4 py-8 md:py-12 flex flex-col items-center justify-center">
-        <div className="text-center mb-8 md:mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2 md:mb-4 text-gray-800">Next Hire</h1>
-          <p className="text-lg md:text-xl text-gray-600">The easiest way to jot down and share text online</p>
+     <div className="flex flex-col min-h-screen bg-white text-gray-800">
+      <section className="w-full relative">
+        <div className="bg-[#4796f6] text-white overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="space-y-8"
+          >
+            <div className="absolute inset-0">
+              <div className="absolute inset-0 bg-[url('/placeholder.svg?height=800&width=1600')] opacity-10" />
+            </div>
+
+            <Carousel className="w-full max-w-6xl mx-auto" selectedIndex={activeSlide}>
+              <CarouselContent>
+                {slides.map((slide, index) => (
+                  <CarouselItem key={index}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-12 min-h-[600px] items-center">
+                      <div className="relative">
+                        <img
+                          src={slide.image}
+                          alt="Researcher"
+                          className="rounded-full shadow-xl border-4 border-lime-500 hover:scale-110 hover:shadow-2xl transition-transform duration-300 ease-in-out"
+                        />
+                      </div>
+                      <div className="space-y-6">
+                        <h1 className="text-4xl md:text-5xl font-bold leading-tight">{slide.title}</h1>
+                        <p className="text-lg md:text-xl text-gray-200">{slide.description}</p>
+                        <div className="flex items-center gap-2 bg-white/10 p-3 rounded-lg w-fit">
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-5 h-5 ${
+                                  i < Math.floor(slide.rating)
+                                    ? "text-yellow-400 fill-yellow-400"
+                                    : "text-gray-400"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="font-medium">Rated {slide.rating}/5</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-4" />
+              <CarouselNext className="right-4" />
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      activeSlide === index ? "w-8 bg-white" : "bg-white/50"
+                    }`}
+                    onClick={() => setActiveSlide(index)}
+                  />
+                ))}
+              </div>
+            </Carousel>
+          </motion.div>
         </div>
 
-        <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 md:p-8">
-          <div className="flex flex-col md:flex-row mb-6">
-            <div className="bg-gray-100 text-gray-500 px-4 py-2 rounded-t-md md:rounded-l-md md:rounded-tr-none border border-b-0 md:border-b md:border-r-0 text-center md:text-left">
-              nexthire.com/
+        {/* Overlapping Services Section */}
+        <div className="relative -mt-20 z-10 max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 2 }}
+            className="space-y-8"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {servicess.map((service, index) => (
+                <Card key={index} className="group hover:shadow-lg transition-all bg-white">
+                  <CardContent className="p-6 space-y-4">
+                    <div className="w-12 h-12 rounded-lg bg-[#2563EB] text-white flex items-center justify-center">
+                      {service.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">{service.title}</h3>
+                    <p className="text-gray-600">{service.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-            <Input
-              type="text"
-              placeholder="your-secret-page"
-              value={pageUrl}
-              onChange={(e) => setPageUrl(e.target.value)}
-              className="flex-grow rounded-t-none md:rounded-l-none md:rounded-r-none"
-            />
-            <Button onClick={gh} className="mt-2 md:mt-0 md:ml-2 w-full md:w-auto">Go!</Button>
-          </div>
-
-          <RadioGroup value={visibility} onValueChange={setVisibility} className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mb-6">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="public" id="public" />
-              <Label htmlFor="public">Public</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="private" id="private" />
-              <Label htmlFor="private">Private</Label>
-            </div>
-          </RadioGroup>
-
-          <div className="mb-6">
-            <Label htmlFor="expires-in" className="mb-2 block">Expires In</Label>
-            <Select value={expiresIn} onValueChange={setExpiresIn}>
-              <SelectTrigger id="expires-in">
-                <SelectValue placeholder="Select expiration time" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1h">1 hour</SelectItem>
-                <SelectItem value="1d">1 day</SelectItem>
-                <SelectItem value="1w">1 week</SelectItem>
-                <SelectItem value="1m">1 month</SelectItem>
-                <SelectItem value="never">Never</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <p className="text-center text-sm text-gray-500">No login required</p>
+          </motion.div>
         </div>
-      </main>
+      </section>
+
+      {/* Time Line  */}
+      <section>
+        <TimeLine/>
+      </section>
+
+      {/* Counter */}
+      <section>
+        <ImprovedStatsCounter/>
+      </section>
+      </div>
+      < ScrollToTop/> 
     </>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
