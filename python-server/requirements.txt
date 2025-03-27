@@ -1,3 +1,13 @@
 fastapi
 uvicorn
 python-dotenv
+jwt
+google-generativeai
+langchain
+langchain_google_genai
+python-multipart
+PyPDF2
+groq
+Werkzeug<1
+python-docx
+pypandoc
