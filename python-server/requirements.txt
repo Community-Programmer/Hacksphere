@@ -11,3 +11,5 @@ groq
 Werkzeug<1
 python-docx
 pypandoc
+websockets
+google-genai==0.3.0

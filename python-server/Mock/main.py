@@ -6,10 +6,11 @@ import os
 import websockets
 from google import genai
 import base64
+from dotenv import load_dotenv
 
 
-# Load API key from environment
-os.environ['GOOGLE_API_KEY'] = ''
+load_dotenv()
+
 MODEL = "gemini-2.0-flash-exp"  # use your model ID
 
 system_instructions = """

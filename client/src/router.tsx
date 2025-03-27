@@ -21,6 +21,8 @@ import RoadMap from "./pages/AI_Tutor/RoadMap";
 import Learning from "./pages/AI_Tutor/Learning";
 import Quiz from "./pages/AI_Tutor/Quiz";
 import QuizQuestion from "./pages/AI_Tutor/QuizQuestion";
+import Interview from "./pages/Interview/Interview";
+import InterviewAssist from "./pages/Interview/InterviewAssist";
 
 const mainLayoutRoutes = [
   {
@@ -125,6 +127,14 @@ const router = createBrowserRouter([
       {
         path: "/reset-password/:resetToken",
         element: <PasswordResetForm />,
+      },
+      {
+        path: "/interview",
+        element: <Interview />,
+      },
+      {
+        path: "/interview-help",
+        element: <InterviewAssist/>,
       },
     ],
   },
