@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes.Interview_Helper import interviewHelper
 from app.api.routes.ResumeEvaluator import ResumeScore
+from app.api.routes.PdfChat import pdfchat
 
 load_dotenv()
 
@@ -25,6 +26,7 @@ app.add_middleware(
 
 app.include_router(interviewHelper.router, prefix="/api/v1/interviewhelper",tags=["interviewhelper"])
 app.include_router(ResumeScore.router, prefix="/api/v1/resume", tags=["resume"])
+app.include_router(pdfchat.router, prefix="/api/v1/pdfchat",tags=["pdfchat"])
 
 @app.get("/")
 def root():

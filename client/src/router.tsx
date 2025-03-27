@@ -23,6 +23,7 @@ import Quiz from "./pages/AI_Tutor/Quiz";
 import QuizQuestion from "./pages/AI_Tutor/QuizQuestion";
 import Interview from "./pages/Interview/Interview";
 import InterviewAssist from "./pages/Interview/InterviewAssist";
+import PdfChatting from "./pages/PdfChatting/PdfChatting";
 
 const mainLayoutRoutes = [
   {
@@ -42,6 +43,10 @@ const mainLayoutRoutes = [
     path: "/Premium",
     element: <Premium />,
   },
+  {
+    path: "/pdf-chat",
+    element: <PdfChatting/>,
+  }
 ];
 
 
