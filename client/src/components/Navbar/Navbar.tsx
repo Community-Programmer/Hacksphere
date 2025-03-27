@@ -14,7 +14,7 @@ const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/interview", label: "Mock Interview" },
   { href: "/interview-help", label: "Interview AI Assistant" },
-  { href: "/ai-tutor", label: "Prepare" },
+  { href: "/placementprep", label: "Prepare" },
   { href: "/resume", label: "Resume Evaluator" },
   { href: "/feedback", label: "FeedBack" },
 ];
