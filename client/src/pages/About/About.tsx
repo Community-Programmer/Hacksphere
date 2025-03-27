@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const AboutPage = () => {
-  return (
-    <div>About</div>
-  )
-}
+const About: React.FC = () => {
+  return <div>Shogun the Purple Born</div>;
+};
 
-export default AboutPage
+export default About;
